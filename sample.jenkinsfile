@@ -23,23 +23,23 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh ```
+        sh '''
         ls echo "In build step"
-        ```
+        '''
       }
     }
     stage('Test') {
       steps {
-        sh ```
+        sh '''
         echo "In test step"
-        ```
+       '''
       }
     }
      stage('Deploy') {
       steps {
-        sh ```
+        sh '''
         echo "Value of env variable is $MY_ENV_VAR"
-        ```
+        '''
       }
     }
   }
