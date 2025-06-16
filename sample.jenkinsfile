@@ -1,0 +1,54 @@
+pipeline {
+  agent any
+
+  environment {
+    MY_ENV_VAR = 'some_value'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        script {
+          def gitRepoUrl = ''
+
+          checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/master']],
+            userRemoteConfigs: [[url: gitRepoUrl]],
+            extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true]]
+          ])
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh ```
+        ls echo "In build step"
+        ```
+      }
+    }
+    stage('Test') {
+      steps {
+        sh ```
+        echo "In test step"
+        ```
+      }
+    }
+     stage('Deploy') {
+      steps {
+        sh ```
+        echo "Value of env variable is $MY_ENV_VAR"
+        ```
+      }
+    }
+  }
+  post {
+    success {
+      echo 'pipeline success'
+    }
+    failure {
+      echo 'Pipeline'
+    }
+  }
+}
